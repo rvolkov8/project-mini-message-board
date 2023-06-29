@@ -2,10 +2,20 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <a href="/new">Add you message</a>
+    <ul>
+      <% messages.forEach((message) => { %>
+      <li>
+        <%= `${message.user}: ${message.text} (
+        ${message.added.toLocaleDateString('en-US', { weekday: 'long', year:
+        'numeric', month: 'long', day: 'numeric' })})` %>
+      </li>
+      <% }); %>
+    </ul>
   </body>
 </html>
