@@ -9,11 +9,9 @@
     <p>Welcome to <%= title %></p>
     <a href="/new">Add you message</a>
     <ul>
-      <% messages.forEach((message) => { %>
+      <% docs.forEach(doc => { %>
       <li>
-        <%= `${message.user}: ${message.text} (
-        ${message.added.toLocaleDateString('en-US', { weekday: 'long', year:
-        'numeric', month: 'long', day: 'numeric' })})` %>
+        <%= `${doc.name}: ${doc.message} (${doc.added.toLocaleString()})`%>
       </li>
       <% }); %>
     </ul>

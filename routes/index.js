@@ -1,35 +1,35 @@
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
+const mongoose = require('mongoose');
+const Message = require('../models/message');
 
-const messages = [
-  {
-    text: 'Hi there!',
-    user: 'Amando',
-    added: new Date(),
-  },
-  {
-    text: 'Hello World!',
-    user: 'Charles',
-    added: new Date(),
-  },
-];
+mongoose
+  .connect(process.env.DB_URI)
+  .then((x) =>
+    console.log(`Connected the Database: "${x.connections[0].name}"`)
+  )
+  .catch((err) => console.error('Error connecting to mongo', err));
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Mini Message App', messages: messages });
+router.get('/', async function (req, res, next) {
+  await Message.find().then((docs) => {
+    res.render('index', { title: 'Mini Message App', docs: docs });
+  });
 });
 
 router.get('/new', (req, res) => {
   res.render('form', { title: 'Mini Message App' });
 });
 
-router.post('/new', (req, res) => {
+router.post('/new', async (req, res) => {
   const reqBody = req.body;
-  messages.push({
-    text: reqBody.userMessage,
-    user: reqBody.userName,
+  const message = new Message({
+    name: reqBody.userName,
+    message: reqBody.userMessage,
     added: new Date(),
   });
+  await message.save().then(() => console.log('Message saved'));
   res.redirect('/');
 });
 
